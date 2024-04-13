@@ -1,21 +1,9 @@
 import { conexion } from "../database/conection.js"
 
 export class FormModel {
-  static async getAll ({ genre }) {
+  static async getAll () {
     const db = await conexion()
-    
-    if (genre) {
-      return db.find({
-        genre: {
-          $elemMatch: {
-            $regex: genre,
-            $options: 'i'
-          }
-        }
-      }).toArray()
-    }
-
-    return db.find({}).toArray() 
+      return db.find().toArray()
   }
   static async create ({ input }) {
     const db = await conexion()
