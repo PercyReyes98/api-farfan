@@ -3,8 +3,7 @@ import { validateForm} from '../schemas/validacion.form.js'
 
 export class FormController {
   static async getAll (req, res) {
-    const { genre } = req.query
-    const form = await FormModel.getAll({ genre })
+    const form = await FormModel.getAll()
     res.json(form)
   }
   static async create (req, res) {
