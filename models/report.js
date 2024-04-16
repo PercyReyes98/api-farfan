@@ -13,31 +13,19 @@ export class ReportModel {
     return reporte
       
   }
-  static async create (data) {
+  static async create ({reporte}) {
+    await conexion()
+    const newEmpresa = await new empresaModel.create(reporte.empresa)
+    const newIngresos = await new ingresoModel.create(reporte.ingresos) 
+    const newProyeccion = await new proyeccionModel.create(reporte.proyeccion) 
+    const newImpuesto = await new impuestoModel.create(reporte.impuesto)  
+  
     
-    await conexion();
-    const empresa = new empresaModel({
-      _id: new mongoose.Types.ObjectId(),
-      ...data.empresa
-    });
-  
-    await empresa.save();
-  
-    const ingresos = new ingresoModel({
-      empresa: empresa._id,
-      ...data.ingresos
-    })
-    const proyeccion = new proyeccionModel({
-      empresa: empresa._id,
-      ...data.proyeccion
-    })
-    const impuestos = new impuestoModel({
-      empresa: empresa._id,
-      ...data.impuestos
-    })
-  
-    await Promise.all([ ingresos.save(), proyeccion.save(),impuestos.save()]);
-  
-    return empresa;
-  };
+    return {
+      newEmpresa,
+      newIngresos,
+      newProyeccion,
+      newImpuesto
+    }
+  }
   }

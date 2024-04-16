@@ -1,4 +1,4 @@
-import { MongoClient, ServerApiVersion } from 'mongodb'
+//import { MongoClient, ServerApiVersion } from 'mongodb'
 import mongoose from 'mongoose'
 const uri = process.env.ATLAS_URI
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version

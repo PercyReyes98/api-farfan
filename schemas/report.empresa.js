@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const empresaModel = new Schema ({
     ruc: {type: String, require: true},
@@ -7,4 +7,4 @@ const empresaModel = new Schema ({
     ejercicio: {type: String, require: true}
 })
 
-export default model("Empresa",empresaModel)
+export default mongoose.model("Empresa",empresaModel)

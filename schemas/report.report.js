@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose"
+import mongoose, { Schema, model } from "mongoose"
 
 const reporte = new Schema ({
     empresa: { type: Schema.Types.ObjectId, ref: 'Empresa' },
@@ -7,4 +7,4 @@ const reporte = new Schema ({
     impuesto: { type: Schema.Types.ObjectId, ref: 'Impuesto' }
 
 })
-export default model("Reporte", reporte)
+export default mongoose.model("Reporte", reporte)

@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const proyeccionModel = new Schema ({
     ventas: {type: Number, require: true},
@@ -9,4 +9,4 @@ const proyeccionModel = new Schema ({
     adquiridas_total: {type: Number, require: true}
 })
 
-export default model("Proyeccion",proyeccionModel)
+export default mongoose.model("Proyeccion",proyeccionModel)

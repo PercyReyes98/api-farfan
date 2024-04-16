@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema} from "mongoose";
 
 const impuestosModel = new Schema ({
     empresa: { type: Schema.Types.ObjectId, ref: 'Empresa' },
@@ -9,4 +9,4 @@ const impuestosModel = new Schema ({
     total_impuesto: { type: Number, require: true}
 })
 
-export default model("Impuestos",impuestosModel)
+export default mongoose.model("Impuestos",impuestosModel)
