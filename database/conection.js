@@ -23,8 +23,8 @@ export const conexion = async function connect () {
 }*/
 export const conexion = async function connect(){
       try {
-        const db = await mongoose.connect(uri)
-        return db
+        await mongoose.connect(uri)
+        
       } catch (error) {
         console.log(error)
       }

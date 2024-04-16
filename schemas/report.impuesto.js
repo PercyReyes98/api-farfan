@@ -6,7 +6,7 @@ const impuestosModel = new Schema ({
     credito_a_favor_anterior: {type: Number, require: true},
     igv_por_devolver: {type: Number, require: true},
     impuesto_a_la_renta: {type: Number, require: true},
-    total_impuesto: {type: Number, require}
+    total_impuesto: { type: Number, require: true}
 })
 
 export default model("Impuestos",impuestosModel)
