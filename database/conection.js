@@ -1,5 +1,7 @@
 //import { MongoClient, ServerApiVersion } from 'mongodb'
-import mongoose from 'mongoose'
+import {connect} from 'mongoose'
+import dotenv from "dotenv"
+dotenv.config()
 const uri = process.env.ATLAS_URI
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 /* const client = new MongoClient(uri, {
@@ -21,10 +23,10 @@ export const conexion = async function connect () {
     await client.close()
   }
 }*/
-export const conexion = async function connect(){
+export const conexion = async ()=>{
       try {
-        await mongoose.connect(uri)
-        
+        const db = await connect(uri)
+        return db
       } catch (error) {
         console.log(error)
       }

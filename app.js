@@ -1,10 +1,13 @@
 import express from "express"
-import "./database/config.js"
+import dotenv from "dotenv";
 import morgan from "morgan"
 import cors from "cors"
+import { conexion } from "./database/conection.js"
 import {reportRoute} from "./routes/report.route.js"
 
 const app = express()
+dotenv.config();
+conexion()
 app.use(cors())
 app.use(morgan("dev"))
 app.use(express.json())
