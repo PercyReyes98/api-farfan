@@ -1,17 +1,28 @@
-import CompanyModel from '../models/company.js'
-import FinanceCompanyModel from '../models/financeCompany.js'
+import Company from '../models/Company.js'
+import FinanceCompany from '../models/FinanceCompany.js'
+import mongoose from 'mongoose';
 
 export class ReportController {
   static async getAll (req, res) {
-        const data = await CompanyModel.find().populate('Bank')
+        const data = await Company.find().populate("financeCompany")
         return res.status(200).json(data);
   }
   static async create (req, res) {
-    const {ruc, name, period, exercise, bank} = req.body
-    const financeCompany =  await FinanceCompanyModel.findById(bank)
-    const newCompany = new Company({ ruc, name, period, exercise, bank: financeCompany });
-    await newCompany.save();
+    const {ruc, name, period, exercise, financeCompany} = req.body
+    const financeComp = new FinanceCompany({
+      _id: new mongoose.Types.ObjectId(),
+      name: financeCompany.name,
+      amount: financeCompany.amount
+    })
+    await financeComp.save()
+    const newCompany = new Company({
+      ruc: ruc,
+      name: name,
+      period: period,
+      exercise: exercise,
+      financeCompany: financeComp._id})
+    await newCompany.save()
 
-    res.status(201).json(newCompany)
+    return res.status(201).json(newCompany)
   }
 }

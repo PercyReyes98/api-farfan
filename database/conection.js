@@ -1,5 +1,5 @@
 //import { MongoClient, ServerApiVersion } from 'mongodb'
-import {connect} from 'mongoose'
+import mongoose from 'mongoose'
 import dotenv from "dotenv"
 dotenv.config()
 const uri = process.env.ATLAS_URI
@@ -25,7 +25,7 @@ export const conexion = async function connect () {
 }*/
 export const conexion = async ()=>{
       try {
-        const db = await connect(uri)
+        const db = await mongoose.connect(uri)
         return db
       } catch (error) {
         console.log(error)
