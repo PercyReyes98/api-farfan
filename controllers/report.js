@@ -1,6 +1,7 @@
 import Company from '../models/Company.js'
 import FinanceCompany from '../models/FinanceCompany.js'
 import mongoose from 'mongoose';
+import { validateCompany } from '../validation/company.validation.js';
 
 export class ReportController {
   static async getAll (req, res) {
