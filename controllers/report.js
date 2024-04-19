@@ -1,11 +1,11 @@
-import Company from '../models/Company.js'
+import company from '../models/Company.js'
 import FinanceCompany from '../models/FinanceCompany.js'
 import mongoose from 'mongoose';
 import { validateCompany } from '../validation/company.validation.js';
 
 export class ReportController {
   static async getAll (req, res) {
-        const data = await Company.find().populate("financeCompany")
+        const data = await company.find().populate("financeCompany")
         return res.status(200).json(data);
   }
   static async create (req, res) {
@@ -16,7 +16,7 @@ export class ReportController {
       amount: financeCompany.amount
     })
     await financeComp.save()
-    const newCompany = new Company({
+    const newCompany = new company({
       ruc: ruc,
       name: name,
       period: period,
