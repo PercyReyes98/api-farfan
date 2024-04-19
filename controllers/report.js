@@ -1,5 +1,5 @@
-import Company from '../models/Company.js'
-import FinanceCompany from '../models/FinanceCompany.js'
+import Company from '../models/company.js'
+import FinanceCompany from '../models/financeCompany.js'
 import mongoose from 'mongoose';
 
 export class ReportController {
@@ -15,7 +15,7 @@ export class ReportController {
       amount: financeCompany.amount
     })
     await financeComp.save()
-    const newCompany = new company({
+    const newCompany = new Company({
       ruc: ruc,
       name: name,
       period: period,
