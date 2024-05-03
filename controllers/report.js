@@ -11,53 +11,91 @@ import mongoose from 'mongoose'
 
 export class ReportController {
   static async getAll (req, res) {
-        const data = await Report.find().populate("company").populate("icome").populate("projections").populate("taxes")
+        const data = await Report.find().populate({
+          path: 'company',
+          select: ['name', 'ruc'] 
+        })
+        .populate({
+          path: 'icome',
+          populate: {
+            path: 'financeCompany',
+            select: ['name', 'ruc'] 
+          },
+          select: 'amount'
+        })
+        .populate({path: 'projections',
+          populate:[{
+              path: 'sales',
+              select: ['total', 'worth', 'igv']
+            },
+            {
+              path: 'shopping',
+              select: ['total', 'worth', 'igv']
+            }
+          ]})
+        .populate({path:'taxes', select: ['of_the_period',
+          'credit_in_favor',
+          'to_return' ,
+          'monthly_rent' ,
+          'total']})
+
         return res.status(200).json(data);
   }
   static async create (req, res) {
     const {company, period, exercise, icome, projections, taxes} = req.body
-
+    //const {financeCompany, amount} = icome
+    const {sales, shopping} = projections
+    const arrayIcome = []
     const newCompany = new Company({
       _id: new mongoose.Types.ObjectId(),
-      name: company.name,
-      ruc: company.ruc
+      ruc: company.ruc,
+      name: company.name
     })
     await newCompany.save()
+    
+    
+    await icome.forEach((icomeDetail)=>{
+      const {financeCompany, amount} = icomeDetail
 
-    const newFinanceCompany = new FinanceCompany({
-      _id: new mongoose.Types.ObjectId(),
-      name: icome.financeCompany.name,
-      ruc: icome.financeCompany.ruc
-    })
-    await newFinanceCompany.save()
+      const newFinanceCompany = new FinanceCompany({
+        _id: new mongoose.Types.ObjectId(),
+        name:financeCompany.name,
+        ruc: financeCompany.ruc
+      })
+      
+      newFinanceCompany.save()
+  
+      const newIcome = new Icome({
+        _id: new mongoose.Types.ObjectId(),
+        financeCompany: newFinanceCompany._id,
+        amount: amount
+      })
 
-    const newIcome = new Icome({
-      _id: new mongoose.Types.ObjectId(),
-      financeCompany: icome.financeCompany._id,
-      amount: icome.amount
+      newIcome.save()
+      arrayIcome.push(newIcome)
+      
     })
-    await newIcome.save()
 
     const newSales = new Sales({
       _id: new mongoose.Types.ObjectId(),
-      total: projections.sales.total,
-      worth: projections.sales.worth,
-      igv: projections.sales.igv
+      total: sales.total,
+      worth: sales.worth,
+      igv: sales.igv
     })
     await newSales.save()
 
     const newShopping = new Shopping({
       _id: new mongoose.Types.ObjectId(),
-      total: projections.shopping.total,
-      worth: projections.shopping.worth,
-      igv: projections.shopping.igv
+      total: shopping.total,
+      worth: shopping.worth,
+      igv: shopping.igv
     })
     await newShopping.save()
 
     const newProjections = new Projections({
       _id: new mongoose.Types.ObjectId(),
-      sales: projections.sales._id,
-      shopping: projections.shopping._id})
+      sales: newSales._id,
+      shopping: newShopping._id})
     await newProjections.save()
 
     const newTaxes = new Taxes({
@@ -71,14 +109,14 @@ export class ReportController {
     await newTaxes.save()
 
     const newReport = new Report({
-      company: company._id,
+      company: newCompany._id,
       period: period,
       exercise: exercise,
-      icome: [icome._id],
-      projections: projections._id,
-      taxes: taxes._id
+      icome: arrayIcome,
+      projections: newProjections._id,
+      taxes: newTaxes._id
     })
-    await newReport.save
+    await newReport.save()
     return res.status(201).json(newReport)
   }
 }
