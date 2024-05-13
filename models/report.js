@@ -1,12 +1,28 @@
+import { Timestamp } from "mongodb";
 import { Schema, model } from "mongoose";
 
 const ReportModel = new Schema ({
-    company: {type: Schema.Types.ObjectId, ref: "Company", require: true},
+    company_ruc: {type: String, require: true},
+    company_name: {type: String, require: true},
     period: {type: String, require: true},
     exercise: {type: String, require: true},
-    icome: [{ type: Schema.Types.ObjectId, ref: "Icome", require: true}],
-    projections: { type: Schema.Types.ObjectId, ref: "Projections", require: true},
-    taxes: { type: Schema.Types.ObjectId, ref: "Taxes", require: true}
+    bcp_amount:{type: Number, require: true},
+    interbank_amount: {type: Number, require: true},
+    bbva_amount: {type: Number, require: true},
+    icome_total:{type: Number, require: true},
+    projection_sales_worth: {type: Number, require:true},
+    projection_sales_igv: {type: Number, require:true},
+    projection_sales_total:{type: Number, require: true},
+    projection_shopping_worth: {type:Number, require: true},
+    projection_shopping_igv: {type: Number, require: true},
+    projection_shopping_total:{type: Number, require: true},
+    taxes_of_the_period: {type: Number, require: true},
+    taxes_credit_in_favor: {type: Number, require: true},
+    taxes_to_return: {type: Number, require: true},
+    taxes_monthly_rent: {type: Number, require: true},
+    taxes_total: {type: Number, require: true}
+}, {
+    timestamps: true
 })
 
 export default model("Report", ReportModel)
