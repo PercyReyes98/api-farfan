@@ -6,6 +6,12 @@ export class ReportController {
 
         return res.status(200).json(data);
   }
+  static async getId (req, res){
+    const {company_ruc} = req.params
+
+    const result= await Report.find({ company_ruc: { $regex: company_ruc, $options: 'i' } })
+    return res.status(200).json(result)
+  }
   static async create (req, res) {
     const {company_ruc,
     company_name,
