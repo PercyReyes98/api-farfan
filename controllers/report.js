@@ -12,6 +12,18 @@ export class ReportController {
     const result= await Report.find({ company_ruc: { $regex: company_ruc, $options: 'i' } })
     return res.status(200).json(result)
   }
+  static async deleteId (req, res){
+    const {id} = req.params
+
+    const objId = await Report.findByIdAndDelete(id)
+    return res.status(200).json({message: 'deleted reported'})
+  }
+  static async updateId (req, res){
+    const {id} = req.params
+
+    const objId = await Report.findByIdAndUpdate(id)
+    return res.status(200).json({message:'update reported'})
+  }
   static async create (req, res) {
     const {company_ruc,
     company_name,
