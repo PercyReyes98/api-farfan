@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose"
+import { formatDate } from "../libs/formatDate.js"
 
 const ReportModel = new Schema ({
     company_ruc: {
@@ -78,7 +79,16 @@ const ReportModel = new Schema ({
         require: true
     }
 }, {
-    timestamps: true
+    timestamps: true,
+    toJSON: { virtuals: true }
+})
+
+ReportModel.set('toJSON', {
+    transform: (doc, ret) => {
+        ret.createdAt = formatDate(ret.createdAt)
+        ret.updatedAt = formatDate(ret.updatedAt)
+        return ret
+    }
 })
 
 export default model("Report", ReportModel)
